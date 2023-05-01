@@ -125,12 +125,12 @@
 							<div class="flex-shrink-0 mr-2">
 								<img
 									class="h-10 w-10 rounded-full"
-									src="https://i.pravatar.cc/"
+									src="https://cdn.icon-icons.com/icons2/1371/PNG/512/robot02_90810.png"
 									alt="Profile Picture"
 								/>
 							</div>
 							<div class="bg-gray-200 dark:bg-gray-700 rounded-lg py-2 px-4 shadow-md">
-								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">John Doe</p>
+								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">StudyGenie</p>
 								<p class="text-sm text-gray-700 dark:text-gray-300">{msg.message}</p>
 							</div>
 						</div>
@@ -149,7 +149,7 @@
 							<div class="flex-shrink-0 ml-2">
 								<img
 									class="h-10 w-10 rounded-full"
-									src="https://i.pravatar.cc/"
+									src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=6&m=1223671392&s=612x612&w=0&h=NGxdexflb9EyQchqjQP0m6wYucJBYLfu46KCLNMHZYM="
 									alt="Profile Picture"
 								/>
 							</div>
