@@ -12,12 +12,9 @@
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 	import Languagedropdown from '../lib/languagedropdown.svelte';
+	import { json } from '@sveltejs/kit';
 
-    
- 
-    
-
-	let sideBarItems = [];
+	$: sideBarLinks = [];
 
 	const prompt: ModalSettings = {
 		type: 'prompt',
@@ -35,7 +32,11 @@
 			} else if (r) {
 				projects.push(r);
 				localStorage.setItem('names', JSON.stringify(projects));
-				location.reload(); // Reload the current page
+				sideBarLinks = [...sideBarLinks, r]
+				const initialChatmessage = [{ name: 'AIBOT', message: 'Hello ' + r }]
+				const initialChatmessageStringified = JSON.stringify(initialChatmessage)
+				localStorage.setItem(r, initialChatmessageStringified)
+				console.log(initialChatmessage)
 			}
 		}
 	};
@@ -45,8 +46,7 @@
 	}
 
 	function loadSideBar() {
-		sideBarItems = JSON.parse(localStorage.getItem('names')) || [];
-		console.log(sideBarItems);
+		sideBarLinks = JSON.parse(localStorage.getItem('names')) || [];
 	}
 
 	onMount(loadSideBar);
@@ -58,23 +58,30 @@
 			body: 'Are you sure you want to remove this item?',
 			response: (r: boolean) => {
 				if (r) {
-					sideBarItems = sideBarItems.filter((i) => i !== item);
-					localStorage.setItem('names', JSON.stringify(sideBarItems));
+					sideBarLinks = sideBarLinks.filter((i) => i !== item);
+					localStorage.setItem('names', JSON.stringify(sideBarLinks));
 				}
 			}
 		};
 		modalStore.trigger(confirmModal);
 	}
+
+
 </script>
 
 <Modal />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
-			<svelte:fragment slot="lead"><h1>
-				<span class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone">FlashCard AI.</span>
-			</h1></svelte:fragment>
-		
+			<svelte:fragment slot="lead"
+				><h1>
+					<span
+						class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
+						>StudyPlanner.</span
+					>
+				</h1></svelte:fragment
+			>
+
 			<svelte:fragment slot="trail"
 				><LightSwitch />
 				<Languagedropdown />
@@ -92,15 +99,14 @@
 			</button>
 			<nav class="list-nav">
 				<ul>
-					{#each sideBarItems as item}
+					{#each sideBarLinks as link}
 						<li class="flex flex-row justify-between">
-							<a class="flex-initial" href="/subject/{item}">{item}</a><button
+							<a class="flex-initial" href="/subject/{link}">{link}</a><button
 								class="flex-initial ml-auto"
-								on:click={() => removeItem(item)}>🗑️</button
+								on:click={() => removeItem(link)}>🗑️</button
 							>
 						</li>
 					{/each}
-					<!-- ... -->
 				</ul>
 			</nav>
 		</div>

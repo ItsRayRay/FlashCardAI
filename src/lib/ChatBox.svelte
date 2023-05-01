@@ -6,7 +6,7 @@
 
 	let lastMessageFromChat = [];
 	let message = '';
-	$: chatContent = [];
+	let chatContent = [{	name: 'AIBOT', message: "hello world"}];
 	let scrollToDiv: HTMLDivElement
 
 	async function handleClick() {
