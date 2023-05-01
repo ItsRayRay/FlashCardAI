@@ -1,0 +1,8 @@
+{
+	"/": [],
+	"/api/Langchain": [
+		"src/routes/api/Langchain/+server.js"
+	],
+	"/subject": [],
+	"/subject/[subjectId]": []
+}
