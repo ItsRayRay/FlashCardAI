@@ -29,4 +29,5 @@ Certainly, here is the updated text with the name changed to "FlashCard AI":
       by reviewing flashcards at spaced intervals, which is implemented in the flashcards feature of the app.</li>
     <li><a href="https://supabase.io/">Supabase</a>: A cloud-based service that provides developers with a simple and scalable way to store and retrieve data in real-time. FlashCard AI uses Supabase for vector storage, enabling vector-based queries to find similar flashcards based on their content or topic. Supabase also provides built-in authentication and authorization features, which can help secure user data and prevent unauthorized access.</li>
   </ul>
+  
 </body>
