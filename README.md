@@ -1,5 +1,3 @@
-Certainly, here is the updated text with the name changed to "FlashCard AI":
-
 <body>
   <h1>FlashCard AI</h1>
   <p>FlashCard AI is a web application that helps users to plan their study sessions effectively. The app uses <a href="https://kit.svelte.dev/">SvelteKit</a> for
