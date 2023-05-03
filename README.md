@@ -19,9 +19,9 @@
       interfaces.</li>
     <li><a href="https://fastapi.tiangolo.com/">FastAPI</a>: A fast and modern web framework for building APIs with Python, which provides high performance and
       automatic validation of request and response data.</li>
-    <li><a href="https://langchain.io/">LangChain API</a>: An API that offers natural language processing capabilities, including text analysis and language
+    <li><a href="https://langchain.com/">LangChain API</a>: An API that offers natural language processing capabilities, including text analysis and language
       translation, which is used for processing text data from PDF files and YouTube videos.</li>
-    <li><a href="https://chatgpt.com/">ChatGPT API</a>: An API that enables interactive chatbot functionality, which is integrated into FlashCard AI
+    <li><a href="https://openai.com/">ChatGPT API</a>: An API that enables interactive chatbot functionality, which is integrated into FlashCard AI
       for interactive study sessions.</li>
     <li>Spaced Repetition Learning: A learning technique that helps users learn and retain information more effectively
       by reviewing flashcards at spaced intervals, which is implemented in the flashcards feature of the app.</li>
