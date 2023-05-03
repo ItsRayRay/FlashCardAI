@@ -63,6 +63,9 @@
 				if (r) {
 					sideBarLinks = sideBarLinks.filter((i) => i !== item);
 					localStorage.setItem('names', JSON.stringify(sideBarLinks));
+		
+					localStorage.removeItem(item)
+					
 				}
 			}
 		};
