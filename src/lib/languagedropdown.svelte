@@ -5,9 +5,15 @@
       expanded = !expanded;
       const dropdown = document.getElementById('languageDropdown');
       dropdown.setAttribute('aria-expanded', expanded);
+
     }
 
 
+    function handleLanguageSelect(e) {
+      localStorage.setItem('selectedLanguage',e)
+      expanded = false
+      location.reload()
+    }
 
   </script>
   
@@ -28,12 +34,12 @@
            aria-labelledby="languageDropdown"
            style="display: {expanded ? 'block' : 'none'}">
         <div class="py-1">
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => console.log("selected UK")} role="menuitem"><span>🇬🇧</span> English (UK)</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => console.log("selected BR")} role="menuitem"><span>🇧🇷</span> Brazilian Portuguese</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => console.log("selected FR")} role="menuitem"><span>🇫🇷</span> French</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => console.log("selected NL")} role="menuitem"><span>🇳🇱</span> Dutch</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => console.log("selected ES")} role="menuitem"><span>🇪🇸</span> Spanish</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => console.log("selected DE")} role="menuitem"><span>🇩🇪</span> German</a>
+            <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => handleLanguageSelect("english") } role="menuitem"><span>🇬🇧</span> English (UK)</div>
+            <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => handleLanguageSelect("portuguese")} role="menuitem"><span>🇧🇷</span> Brazilian Portuguese</div>
+            <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => handleLanguageSelect("french")} role="menuitem"><span>🇫🇷</span> French</div>
+            <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => handleLanguageSelect("dutch")} role="menuitem"><span>🇳🇱</span> Dutch</div>
+            <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => handleLanguageSelect("spanish")} role="menuitem"><span>🇪🇸</span> Spanish</div>
+            <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" on:click={() => handleLanguageSelect("german")} role="menuitem"><span>🇩🇪</span> German</div>
       </div>
     </div>
   </main>
