@@ -14,8 +14,40 @@
 	import Languagedropdown from '../lib/languagedropdown.svelte';
 	import { json } from '@sveltejs/kit';
 
+	let selectedLanguageToString;
 
-	const introText = "Hello there! Are you currently studying for something specific? If so, I'm here to help! My purpose is to assist you in your studies by providing you with the tools you need to succeed. You can easily upload resources like YouTube videos and PDF files to me, and I'll learn from them to become your personal tutor.Additionally, I can create flashcards for you to aid in your memorization process. Just scroll down to the flashcard section to access this feature. With my help, you'll be able to study smarter, not harder. Let's get started!";
+	onMount(() => {
+		selectedLanguageToString = JSON.stringify(localStorage.getItem('selectedLanguage'));
+	});
+
+	let buttonText = "";
+
+	$: if (selectedLanguageToString) {
+		switch (selectedLanguageToString) {
+			case JSON.stringify('english'):
+				buttonText = 'add subject';
+				break;
+			case JSON.stringify('spanish'):
+				buttonText = 'Agregar tema';
+				break;
+			case JSON.stringify('portuguese'):
+				buttonText = 'Adicionar assunto';
+				break;
+			case JSON.stringify('french'):
+				buttonText = 'Ajouter un sujet';
+				break;
+			case JSON.stringify('dutch'):
+				buttonText = 'Onderwerp toevoegen';
+				break;
+			case JSON.stringify('german'):
+				buttonText = 'Thema hinzufügen';
+				break;
+			default:
+		}
+	}
+
+	const introText =
+		"Hello there! Are you currently studying for something specific? If so, I'm here to help! My purpose is to assist you in your studies by providing you with the tools you need to succeed. You can easily upload resources like YouTube videos and PDF files to me, and I'll learn from them to become your personal tutor.Additionally, I can create flashcards for you to aid in your memorization process. Just scroll down to the flashcard section to access this feature. With my help, you'll be able to study smarter, not harder. Let's get started!";
 
 	$: sideBarLinks = [];
 
@@ -30,16 +62,16 @@
 		// Returns the updated response value and reloads the page
 		response: (r: string) => {
 			const projects = JSON.parse(localStorage.getItem('names') || '[]');
-			if (r && projects.includes(r)) { 
+			if (r && projects.includes(r)) {
 				alert('Project name already exists.');
 			} else if (r) {
 				projects.push(r);
 				localStorage.setItem('names', JSON.stringify(projects));
-				sideBarLinks = [...sideBarLinks, r]
-				const initialChatmessage = [{ name: 'AIBOT', message: introText}]
-				const initialChatmessageStringified = JSON.stringify(initialChatmessage)
-				localStorage.setItem(r, initialChatmessageStringified)
-				console.log(initialChatmessage)
+				sideBarLinks = [...sideBarLinks, r];
+				const initialChatmessage = [{ name: 'AIBOT', message: introText }];
+				const initialChatmessageStringified = JSON.stringify(initialChatmessage);
+				localStorage.setItem(r, initialChatmessageStringified);
+				console.log(initialChatmessage);
 			}
 		}
 	};
@@ -63,16 +95,13 @@
 				if (r) {
 					sideBarLinks = sideBarLinks.filter((i) => i !== item);
 					localStorage.setItem('names', JSON.stringify(sideBarLinks));
-		
-					localStorage.removeItem(item)
-					
+
+					localStorage.removeItem(item);
 				}
 			}
 		};
 		modalStore.trigger(confirmModal);
 	}
-
-
 </script>
 
 <Modal />
@@ -101,7 +130,7 @@
 				type="button"
 				class="btn variant-filled block mx-auto mb-5"
 			>
-				<span>Add Subject</span>
+				<span>{buttonText}</span>
 			</button>
 			<nav class="list-nav">
 				<ul>
