@@ -52,6 +52,10 @@
 			name: 'user',
 			message: message
 		};
+
+		
+		// put an if statement if last object of chatcontent is of name AIBOT then run code
+
 		const getLocalChat = localStorage.getItem(subjectId);
 		const getlocalChatToArray = JSON.parse(getLocalChat || '[]');
 		getlocalChatToArray.push(messageObj);
@@ -59,6 +63,9 @@
 		localStorage.setItem(subjectId, setArraytoString);
 		message = '';
 		chatContent = [...chatContent];
+		console.log(chatContent)
+
+
 	}
 
 	// Handle key press event

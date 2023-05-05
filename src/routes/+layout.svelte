@@ -20,7 +20,7 @@
 		selectedLanguageToString = JSON.stringify(localStorage.getItem('selectedLanguage'));
 	});
 
-	let buttonText = "";
+	let buttonText = "Add subject";
 
 	$: if (selectedLanguageToString) {
 		switch (selectedLanguageToString) {
