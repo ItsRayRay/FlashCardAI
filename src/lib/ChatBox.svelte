@@ -16,9 +16,8 @@
 		});
 
 		if (response.ok) {
+			if ( chatContent[chatContent.length - 1].name === "user" ) {  //checks if name of the chatcontent is user or AIBOT to make the chatbox QA type
 			const data = await response.json();
-			console.log(data);
-
 			chatContent.push(data);
 			console.log(chatContent);
 			const getLocalStorageAPI = localStorage.getItem(subjectId);
@@ -28,6 +27,7 @@
 			localStorage.setItem(subjectId, localStorageAPItoString);
 			chatContent = [...chatContent];
 			scrollToBotton()
+			}
 		}
 	}
 
@@ -56,6 +56,8 @@
 		
 		// put an if statement if last object of chatcontent is of name AIBOT then run code
 
+		if ( chatContent[chatContent.length - 1].name === "AIBOT" ) {
+
 		const getLocalChat = localStorage.getItem(subjectId);
 		const getlocalChatToArray = JSON.parse(getLocalChat || '[]');
 		getlocalChatToArray.push(messageObj);
@@ -63,7 +65,11 @@
 		localStorage.setItem(subjectId, setArraytoString);
 		message = '';
 		chatContent = [...chatContent];
-		console.log(chatContent)
+
+
+		}
+
+
 
 
 	}
