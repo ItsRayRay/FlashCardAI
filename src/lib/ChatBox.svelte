@@ -5,12 +5,12 @@
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 
 	let lastMessageFromChat = [];
-	let flashCards = []
+	let flashCards = [];
 	let message = '';
-	let chatContent = [{	name: 'AIBOT', message: "hello world"}];
-	let scrollToDiv: HTMLDivElement
-	let flashCardButtonCount = chatContent.length
-	$: console.log(chatContent.length)
+	let chatContent = [{ name: 'AIBOT', message: 'hello world' }];
+	let scrollToDiv: HTMLDivElement;
+	let flashCardButtonCount = chatContent.length;
+	$: console.log(chatContent.length);
 
 	async function handleClick() {
 		const response = await fetch('/api/Langchain', {
@@ -19,28 +19,30 @@
 		});
 
 		if (response.ok) {
-			if ( chatContent[chatContent.length - 1].name === "user" ) {  //checks if name of the chatcontent is user or AIBOT to make the chatbox QA type
-			const data = await response.json();
-			chatContent.push(data);
-			const getLocalStorageAPI = localStorage.getItem(subjectId);
-			const getlocalStorageAPIToArray = JSON.parse(getLocalStorageAPI || '[]');
-			getlocalStorageAPIToArray.push(data);
-			const localStorageAPItoString = JSON.stringify(getlocalStorageAPIToArray);
-			localStorage.setItem(subjectId, localStorageAPItoString);
-			chatContent = [...chatContent];
-			scrollToBotton()
+			if (chatContent[chatContent.length - 1].name === 'user') {
+				//checks if name of the chatcontent is user or AIBOT to make the chatbox QA type
+				const data = await response.json();
+				chatContent.push(data);
+				const getLocalStorageAPI = localStorage.getItem(subjectId);
+				const getlocalStorageAPIToArray = JSON.parse(getLocalStorageAPI || '[]');
+				getlocalStorageAPIToArray.push(data);
+				const localStorageAPItoString = JSON.stringify(getlocalStorageAPIToArray);
+				localStorage.setItem(subjectId, localStorageAPItoString);
+				chatContent = [...chatContent];
+				scrollToBotton();
 			}
 		}
 	}
 
-
 	function scrollToBotton() {
 		setTimeout(function () {
 			scrollToDiv.scrollIntoView({
-				behavior: 'smooth', block: 'end', inline: 'nearest'
-			})
-		}, 100)
-	} 
+				behavior: 'smooth',
+				block: 'end',
+				inline: 'nearest'
+			});
+		}, 100);
+	}
 
 	// Get subjectId from $page.params.subjectId
 	let subjectId = '';
@@ -55,54 +57,51 @@
 			message: message
 		};
 
-		
 		// put an if statement if last object of chatcontent is of name AIBOT then run code
 
-		if ( chatContent[chatContent.length - 1].name === "AIBOT" ) {
-
-		const getLocalChat = localStorage.getItem(subjectId);
-		const getlocalChatToArray = JSON.parse(getLocalChat || '[]');
-		getlocalChatToArray.push(messageObj);
-		const setArraytoString = JSON.stringify(getlocalChatToArray);
-		localStorage.setItem(subjectId, setArraytoString);
-		message = '';
-		chatContent = [...chatContent];
-
-
+		if (chatContent[chatContent.length - 1].name === 'AIBOT') {
+			const getLocalChat = localStorage.getItem(subjectId);
+			const getlocalChatToArray = JSON.parse(getLocalChat || '[]');
+			getlocalChatToArray.push(messageObj);
+			const setArraytoString = JSON.stringify(getlocalChatToArray);
+			localStorage.setItem(subjectId, setArraytoString);
+			message = '';
+			chatContent = [...chatContent];
 		}
-
 	}
 
 	// Handle key press event
 	function handleKeyPress(event) {
 		if (event.key === 'Enter') {
 			sendMessage();
-		getLastChatMessage();
-		lastMessageFromChat.unshift(getLastChatMessage().message);
-		handleClick();
-		scrollToBotton()
+			getLastChatMessage();
+			lastMessageFromChat.unshift(getLastChatMessage().message);
+			handleClick();
+			scrollToBotton();
 		}
 	}
 
-
-		const confirm: ModalSettings = {
+	const confirm: ModalSettings = {
 		type: 'confirm',
 		// Data
 		title: 'Please Confirm',
 		body: 'Save your question & AI response as a flashcard?',
 		// TRUE if confirm pressed, FALSE if cancel pressed
-		response: (r: boolean, e: any) => {
-			console.log(chatContent, e)
-		}
-
-
-	}
+		response: (r: boolean, e: any) => {}
+	};
 	// Modal settings
 
 	// Handle modal submit
 	function handleModalSubmit(e) {
 		modalStore.trigger(confirm, e);
-		console.log(e)
+
+		chatContent.map((event, index) => {
+	
+			if (event.message === e) {
+				console.log(event);
+				console.log(chatContent[index+1])
+			}
+		});
 	}
 
 	// Get chat content from local storage and update chatContent array
@@ -123,19 +122,13 @@
 		}
 	}
 
-	
 	function runBothFunctions() {
 		sendMessage();
 		getLastChatMessage();
 		lastMessageFromChat.unshift(getLastChatMessage().message);
 		handleClick();
-		scrollToBotton()
+		scrollToBotton();
 	}
-
-
-
-
-
 </script>
 
 <div id="cardcontainer" class="card p-4">
@@ -164,7 +157,9 @@
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">You</p>
 								<p class="text-sm text-gray-700 dark:text-gray-300">{msg.message}</p>
 								<button
-									on:click={() => {handleModalSubmit(msg.message)}}
+									on:click={() => {
+										handleModalSubmit(msg.message);
+									}}
 									type="button"
 									class="btn-icon variant-filled ml-2 mt-2">💾</button
 								>
@@ -179,7 +174,7 @@
 						</div>
 					{/if}
 				{/each}
-				<div class="" bind:this={scrollToDiv}></div>
+				<div class="" bind:this={scrollToDiv} />
 			</div>
 		</div>
 	</div>
@@ -236,8 +231,8 @@
 		max-height: 43vh;
 		margin-bottom: 1.8em;
 		overflow-y: scroll;
-  scroll-behavior: smooth;
-  scroll-margin-top: 9999px;
+		scroll-behavior: smooth;
+		scroll-margin-top: 9999px;
 	}
 
 	#chatbubble {
