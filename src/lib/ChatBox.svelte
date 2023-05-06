@@ -5,9 +5,12 @@
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 
 	let lastMessageFromChat = [];
+	let flashCards = []
 	let message = '';
 	let chatContent = [{	name: 'AIBOT', message: "hello world"}];
 	let scrollToDiv: HTMLDivElement
+	let flashCardButtonCount = chatContent.length
+	$: console.log(chatContent.length)
 
 	async function handleClick() {
 		const response = await fetch('/api/Langchain', {
@@ -19,7 +22,6 @@
 			if ( chatContent[chatContent.length - 1].name === "user" ) {  //checks if name of the chatcontent is user or AIBOT to make the chatbox QA type
 			const data = await response.json();
 			chatContent.push(data);
-			console.log(chatContent);
 			const getLocalStorageAPI = localStorage.getItem(subjectId);
 			const getlocalStorageAPIToArray = JSON.parse(getLocalStorageAPI || '[]');
 			getlocalStorageAPIToArray.push(data);
@@ -69,9 +71,6 @@
 
 		}
 
-
-
-
 	}
 
 	// Handle key press event
@@ -85,19 +84,25 @@
 		}
 	}
 
-	// Modal settings
-	const confirm: ModalSettings = {
+
+		const confirm: ModalSettings = {
 		type: 'confirm',
 		// Data
 		title: 'Please Confirm',
 		body: 'Save your question & AI response as a flashcard?',
 		// TRUE if confirm pressed, FALSE if cancel pressed
-		response: (r: boolean) => console.log('response:', r)
-	};
+		response: (r: boolean, e: any) => {
+			console.log(chatContent, e)
+		}
+
+
+	}
+	// Modal settings
 
 	// Handle modal submit
-	function handleModalSubmit() {
-		modalStore.trigger(confirm);
+	function handleModalSubmit(e) {
+		modalStore.trigger(confirm, e);
+		console.log(e)
 	}
 
 	// Get chat content from local storage and update chatContent array
@@ -126,6 +131,11 @@
 		handleClick();
 		scrollToBotton()
 	}
+
+
+
+
+
 </script>
 
 <div id="cardcontainer" class="card p-4">
@@ -154,7 +164,7 @@
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">You</p>
 								<p class="text-sm text-gray-700 dark:text-gray-300">{msg.message}</p>
 								<button
-									on:click={handleModalSubmit}
+									on:click={() => {handleModalSubmit(msg.message)}}
 									type="button"
 									class="btn-icon variant-filled ml-2 mt-2">💾</button
 								>
