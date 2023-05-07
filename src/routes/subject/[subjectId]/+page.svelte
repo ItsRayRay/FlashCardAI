@@ -5,6 +5,10 @@
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import ChatBox from '../../../lib/ChatBox.svelte';
 	import FlashcardSection from '../../../lib/FlashcardSection.svelte';
+	import { TabGroup, Tab } from '@skeletonlabs/skeleton';
+
+	let tabSet: number = 0;
+
 
 	$: subjectId = $page.params.subjectId;
 
@@ -12,18 +16,35 @@
 
 </script>
 
+<div class="container">
+<h2 class="mx-auto" id="theSubject">{subjectId}</h2>
+
+<TabGroup>
+	<Tab bind:group={tabSet} name="tab1" value={0}>Chat</Tab>
+	<Tab bind:group={tabSet} name="tab2" value={1}>Flashcards</Tab>
+	<!-- Tab Panels --->
+	<svelte:fragment slot="panel">
+		{#if tabSet === 0}
+			<ChatBox  />
+		{:else if tabSet === 1}
+			<FlashcardSection />
+		{/if}
+	</svelte:fragment>
+</TabGroup>
 
 
-<h1 class="mx-auto" id="theSubject">{subjectId}</h1>
-<ChatBox  />
-<FlashcardSection />
 
+</div>
 
 <style>
 	h1 {
-		margin: 0, auto;
-		margin-top: 0.4em;
-		margin-bottom: 0.4em;
-		margin-left: 0.2em;
+		margin-top: 0.1em;
+		margin-bottom: 0.1em;
 	}
+
+	.container {
+		margin: 0 auto;
+		min-width: 100%;
+	}
+
 </style>

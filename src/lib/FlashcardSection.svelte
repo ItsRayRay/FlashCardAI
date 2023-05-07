@@ -1,7 +1,14 @@
 <script>
+	let flashCardArray;
+
+	$: flashCardArray = JSON.parse(localStorage.getItem('flashcard'));
+
+	function checkArray() {
+		console.log(flashCardArray);
+	}
 </script>
 
-<div id="cardcontainer" class="card p-4 flex justify-center">
+<div id="cardcontainer" class="card p-2 flex justify-center ">
 	<div id="cardsection" class="card p-4">
 		<div>
 			<div class="flip-card">
@@ -37,7 +44,7 @@
 				</div>
 				<div class="  mt-5">
 					<button type="button" class="btn variant-filled-warning">
-						<span>Delete Card</span>
+						<span on:click={checkArray}>Delete Card</span>
 					</button>
 				</div>
 			</div>
@@ -68,22 +75,16 @@
 	<div id="saved_cards" class="card p-4">
 		<nav class="list-nav">
 			<h2>Saved Cards</h2>
+
 			<ul>
 				<li>
-					<a id="element" href="/elements/lists">
-						<span class="badge bg-primary-500">💀</span>
-						<span class="flex-auto">Skeleton</span>
-					</a>
-					<a href="/elements/lists">
-						<span class="badge bg-primary-500">💀</span>
-						<span class="flex-auto">Skeleton</span>
-					</a>
-					<a href="/elements/lists">
-						<span class="badge bg-primary-500">💀</span>
-						<span class="flex-auto">Skeleton</span>
-					</a>
+					{#each flashCardArray as a}
+						<a id="element" href="/elements/lists">
+							<span class="badge bg-primary-500">💀</span>
+							<span class="flex-auto">{a.question}</span>
+						</a>
+					{/each}
 				</li>
-				<!-- ... -->
 			</ul>
 		</nav>
 	</div>
@@ -91,28 +92,26 @@
 
 <style>
 	#addflascardsection {
-		min-width: 30%;
+		min-width: 40%;
 	}
 
 	#cardsection {
 		min-width: 40%;
-		
 	}
 
 	#saved_cards {
 		overflow: auto;
 		max-height: 70vh;
-		min-width: 30%;
+		min-width: 20%;
 	}
 
 	#cardcontainer {
-		max-width: 90%;
 		margin: 0 auto;
-		margin-top: 10vh;
+		margin-top: 4vh;
 		min-height: 70vh;
 		max-height: 70vh;
 		margin-bottom: 10vh;
-		min-width: 90%;
+		max-width: 90%;
 	}
 
 	.flip-card {

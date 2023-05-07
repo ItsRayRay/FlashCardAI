@@ -4,36 +4,41 @@
 	import { Modal, modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 
-	let lastMessageFromChat = [];
-	let flashCards = [];
-	let message = '';
-	let chatContent = [{ name: 'AIBOT', message: 'hello world' }];
-	let scrollToDiv: HTMLDivElement;
-	let flashCardButtonCount = chatContent.length;
-	$: console.log(chatContent.length);
+	// Initialize necessary variables
+	let lastMessageFromChat = []; // Array to store the last message sent by the user
+	let flashCardsArray = []; // Array to store flashcard objects
+	let message = ''; // String to store user's message
+	let chatContent = [{ name: 'AIBOT', message: 'hello world' }]; // Array to store chat content with initial message from AI
+	let scrollToDiv: HTMLDivElement; // Element to scroll to when new message is added
+	let flashCardButtonCount = chatContent.length; // Number of flashcard buttons displayed
 
+	// Function to handle clicking the send button
 	async function handleClick() {
+		// Send a POST request to the Langchain API with the last message sent by the user and the subjectId
 		const response = await fetch('/api/Langchain', {
 			method: 'POST',
 			body: JSON.stringify({ message: lastMessageFromChat[0], source: $page.params.subjectId })
 		});
 
+		// If response is ok, add the response to the chat content
 		if (response.ok) {
 			if (chatContent[chatContent.length - 1].name === 'user') {
-				//checks if name of the chatcontent is user or AIBOT to make the chatbox QA type
 				const data = await response.json();
 				chatContent.push(data);
+				// Save the chat content to localStorage for this subjectId
 				const getLocalStorageAPI = localStorage.getItem(subjectId);
 				const getlocalStorageAPIToArray = JSON.parse(getLocalStorageAPI || '[]');
 				getlocalStorageAPIToArray.push(data);
 				const localStorageAPItoString = JSON.stringify(getlocalStorageAPIToArray);
 				localStorage.setItem(subjectId, localStorageAPItoString);
 				chatContent = [...chatContent];
+				// Scroll to the bottom of the chat box
 				scrollToBotton();
 			}
 		}
 	}
 
+	// Function to scroll to the bottom of the chat box
 	function scrollToBotton() {
 		setTimeout(function () {
 			scrollToDiv.scrollIntoView({
@@ -46,19 +51,19 @@
 
 	// Get subjectId from $page.params.subjectId
 	let subjectId = '';
+	// Using a reactive statement to set the subjectId when $page.params.subjectId changes
 	$: {
 		subjectId = $page.params.subjectId;
 	}
 
-	// Function to send message
+	// Function to send user's message
 	function sendMessage() {
 		const messageObj = {
 			name: 'user',
 			message: message
 		};
 
-		// put an if statement if last object of chatcontent is of name AIBOT then run code
-
+		// Check if the last message in chatContent is from AI, if so, add the user's message to chatContent
 		if (chatContent[chatContent.length - 1].name === 'AIBOT') {
 			const getLocalChat = localStorage.getItem(subjectId);
 			const getlocalChatToArray = JSON.parse(getLocalChat || '[]');
@@ -93,17 +98,23 @@
 
 	// Handle modal submit
 	function handleModalSubmit(e) {
+		// Trigger the modal with the 'confirm' settings and the passed-in event 'e'
 		modalStore.trigger(confirm, e);
 
+		// Loop through each event in the chatContent array and get its index as well
 		chatContent.map((event, index) => {
-	
+			// Check if the current event's message matches the passed-in event 'e'
 			if (event.message === e) {
-				console.log(event);
-				console.log(chatContent[index+1])
+				let flashCard = {
+					question: event.message,
+					anwser: chatContent[index + 1].message
+				};
+				flashCardsArray.push(flashCard);
+				let flashCardsArrayToJSON = JSON.stringify(flashCardsArray);
+				localStorage.setItem('flashcard', flashCardsArrayToJSON);
 			}
 		});
 	}
-
 	// Get chat content from local storage and update chatContent array
 	$: {
 		const chatConentfromLocal = localStorage.getItem(subjectId);
@@ -222,6 +233,7 @@
 	#cardcontainer {
 		max-width: 90%;
 		margin: 0 auto;
+		margin-bottom: 20em;
 	}
 
 	#chatcontainer {
