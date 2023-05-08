@@ -1,11 +1,18 @@
 <script>
+
+const currentURL = window.location.href;
+	const localStorageKeyFlashCard = currentURL.substring(currentURL.lastIndexOf('/') + 1) + "flashcard"
+
 	let flashCardArray;
 
-	$: flashCardArray = JSON.parse(localStorage.getItem('flashcard'));
+	$: flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
 	function checkArray() {
 		console.log(flashCardArray);
 	}
+
+
+
 </script>
 
 <div id="cardcontainer" class="card p-2 flex justify-center ">
@@ -55,7 +62,7 @@
 		<h2>add a flashcard</h2>
 		<label class="label">
 			<span>Input</span>
-			<input class="input" type="text" placeholder="Input" />
+			<input class="input" type="text" placeholder="Question" />
 		</label>
 
 		<label class="label">
@@ -63,7 +70,7 @@
 			<textarea
 				class="textarea"
 				rows="4"
-				placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+				placeholder="Answer."
 			/>
 		</label>
 
@@ -79,10 +86,12 @@
 			<ul>
 				<li>
 					{#each flashCardArray as a}
-						<a id="element" href="/elements/lists">
+						<a>
 							<span class="badge bg-primary-500">📘</span>
 							<span class="flex-auto">{a.question}</span>
+							<button>Delete card</button>
 						</a>
+			
 					{/each}
 				</li>
 			</ul>

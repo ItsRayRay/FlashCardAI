@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { FileDropzone } from '@skeletonlabs/skeleton';
+	import { FileDropzone, localStorageStore } from '@skeletonlabs/skeleton';
 	import { Modal, modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 
 	// Initialize necessary variables
 	let lastMessageFromChat = []; // Array to store the last message sent by the user
-	let flashCardsArray = []; // Array to store flashcard objects
 	let message = ''; // String to store user's message
 	let chatContent = [{ name: 'AIBOT', message: 'hello world' }]; // Array to store chat content with initial message from AI
 	let scrollToDiv: HTMLDivElement; // Element to scroll to when new message is added
+	const currentURL = window.location.href;
+	const localStorageKeyFlashCard = currentURL.substring(currentURL.lastIndexOf('/') + 1) + "flashcard"
 
 	// Function to handle clicking the send button
 	async function handleClick() {
@@ -88,33 +89,38 @@
 		}
 	}
 
-	const confirm: ModalSettings = {
-		type: 'confirm',
-		// Data
-		title: 'Please Confirm',
-		body: 'Save your question & AI response as a flashcard?',
-		// TRUE if confirm pressed, FALSE if cancel pressed
-		response: (r: boolean, e: any) => {}
-	};
+	const alert: ModalSettings = {
+	type: 'alert',
+	// Data
+	title: 'Flashcard has been added',
+	body: 'Flashcard has been added',
+
+};
 	// Modal settings
 
 	// Handle modal submit
 	function handleModalSubmit(e) {
 		// Trigger the modal with the 'confirm' settings and the passed-in event 'e'
-		modalStore.trigger(confirm, e);
+		modalStore.trigger(alert);
 
 		// Loop through each event in the chatContent array and get its index as well
 		chatContent.map((event, index) => {
 			// Check if the current event's message matches the passed-in event 'e'
-			if (event.message === e) {
+			if (event.message === e ) {
 				let flashCard = {
 					question: event.message,
 					anwser: chatContent[index + 1].message,
 					key: index
 				};
+
+
+				let flashCardsArray = []
+				let getFlashCards = localStorage.getItem(localStorageKeyFlashCard)
+				let getFlashCardsToString = JSON.parse(getFlashCards)
+				flashCardsArray = [...getFlashCardsToString]
 				flashCardsArray.push(flashCard);
 				let flashCardsArrayToJSON = JSON.stringify(flashCardsArray);
-				localStorage.setItem('flashcard', flashCardsArrayToJSON);
+				localStorage.setItem(localStorageKeyFlashCard, flashCardsArrayToJSON);
 			}
 		});
 	}
