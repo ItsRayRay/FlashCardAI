@@ -100,30 +100,30 @@
 
 	// Handle modal submit
 	function handleModalSubmit(e) {
-		// Trigger the modal with the 'confirm' settings and the passed-in event 'e'
-		modalStore.trigger(alert);
+  // Trigger the modal with the 'confirm' settings and the passed-in event 'e'
+  modalStore.trigger(alert);
 
-		// Loop through each event in the chatContent array and get its index as well
-		chatContent.map((event, index) => {
-			// Check if the current event's message matches the passed-in event 'e'
-			if (event.message === e ) {
-				let flashCard = {
-					question: event.message,
-					anwser: chatContent[index + 1].message,
-					key: index
-				};
+  // Find the chatContent event that matches the passed-in event 'e'
+  const matchingEvent = chatContent.find(event => event.message === e);
+  if (!matchingEvent) return;
 
+  // Create a new flash card object from the matching event and the following event
+  const flashCard = {
+    question: matchingEvent.message,
+    answer: chatContent[chatContent.indexOf(matchingEvent) + 1]?.message,
+    key: chatContent.indexOf(matchingEvent)
+  };
 
-				let flashCardsArray = []
-				let getFlashCards = localStorage.getItem(localStorageKeyFlashCard)
-				let getFlashCardsToString = JSON.parse(getFlashCards)
-				flashCardsArray = [...getFlashCardsToString]
-				flashCardsArray.push(flashCard);
-				let flashCardsArrayToJSON = JSON.stringify(flashCardsArray);
-				localStorage.setItem(localStorageKeyFlashCard, flashCardsArrayToJSON);
-			}
-		});
-	}
+  // Check if the flash card already exists in the stored list of flash cards
+  const existingFlashCards = JSON.parse(localStorage.getItem(localStorageKeyFlashCard) || '[]');
+  if (existingFlashCards.some(card => card.key === flashCard.key)) {
+    return; // do not add the new flash card to the stored list
+  }
+
+  // Add the new flash card to the stored list of flash cards
+  const updatedFlashCards = [...existingFlashCards, flashCard];
+  localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
+}
 	// Get chat content from local storage and update chatContent array
 	$: {
 		const chatConentfromLocal = localStorage.getItem(subjectId);

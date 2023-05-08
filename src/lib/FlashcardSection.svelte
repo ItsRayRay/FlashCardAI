@@ -1,7 +1,7 @@
 <script>
-
-const currentURL = window.location.href;
-	const localStorageKeyFlashCard = currentURL.substring(currentURL.lastIndexOf('/') + 1) + "flashcard"
+	const currentURL = window.location.href;
+	const localStorageKeyFlashCard =
+		currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
 
 	let flashCardArray;
 
@@ -10,12 +10,9 @@ const currentURL = window.location.href;
 	function checkArray() {
 		console.log(flashCardArray);
 	}
-
-
-
 </script>
 
-<div id="cardcontainer" class="card p-2 flex justify-center ">
+<div id="cardcontainer" class="card p-2 flex justify-center">
 	<div id="cardsection" class="card p-4">
 		<div>
 			<div class="flip-card">
@@ -67,11 +64,7 @@ const currentURL = window.location.href;
 
 		<label class="label">
 			<span>Textarea</span>
-			<textarea
-				class="textarea"
-				rows="4"
-				placeholder="Answer."
-			/>
+			<textarea class="textarea" rows="4" placeholder="Answer." />
 		</label>
 
 		<a href="/" class="btn variant-filled">
@@ -91,7 +84,6 @@ const currentURL = window.location.href;
 							<span class="flex-auto">{a.question}</span>
 							<button>Delete card</button>
 						</a>
-			
 					{/each}
 				</li>
 			</ul>
