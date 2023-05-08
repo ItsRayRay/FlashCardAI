@@ -80,7 +80,7 @@
 				<li>
 					{#each flashCardArray as a}
 						<a id="element" href="/elements/lists">
-							<span class="badge bg-primary-500">💀</span>
+							<span class="badge bg-primary-500">📘</span>
 							<span class="flex-auto">{a.question}</span>
 						</a>
 					{/each}
@@ -92,17 +92,17 @@
 
 <style>
 	#addflascardsection {
-		min-width: 40%;
+		min-width: 30%;
 	}
 
 	#cardsection {
-		min-width: 40%;
+		min-width: 35%;
 	}
 
 	#saved_cards {
 		overflow: auto;
 		max-height: 70vh;
-		min-width: 20%;
+		min-width: 35%;
 	}
 
 	#cardcontainer {

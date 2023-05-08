@@ -10,7 +10,6 @@
 	let message = ''; // String to store user's message
 	let chatContent = [{ name: 'AIBOT', message: 'hello world' }]; // Array to store chat content with initial message from AI
 	let scrollToDiv: HTMLDivElement; // Element to scroll to when new message is added
-	let flashCardButtonCount = chatContent.length; // Number of flashcard buttons displayed
 
 	// Function to handle clicking the send button
 	async function handleClick() {
@@ -23,6 +22,7 @@
 		// If response is ok, add the response to the chat content
 		if (response.ok) {
 			if (chatContent[chatContent.length - 1].name === 'user') {
+			
 				const data = await response.json();
 				chatContent.push(data);
 				// Save the chat content to localStorage for this subjectId
@@ -37,6 +37,7 @@
 			}
 		}
 	}
+
 
 	// Function to scroll to the bottom of the chat box
 	function scrollToBotton() {
@@ -83,6 +84,7 @@
 			lastMessageFromChat.unshift(getLastChatMessage().message);
 			handleClick();
 			scrollToBotton();
+		
 		}
 	}
 
@@ -107,7 +109,8 @@
 			if (event.message === e) {
 				let flashCard = {
 					question: event.message,
-					anwser: chatContent[index + 1].message
+					anwser: chatContent[index + 1].message,
+					key: index
 				};
 				flashCardsArray.push(flashCard);
 				let flashCardsArrayToJSON = JSON.stringify(flashCardsArray);
@@ -167,13 +170,15 @@
 							<div class="bg-gray-200 dark:bg-gray-700 rounded-lg py-2 px-4 shadow-md text-right">
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">You</p>
 								<p class="text-sm text-gray-700 dark:text-gray-300">{msg.message}</p>
-								<button
-									on:click={() => {
-										handleModalSubmit(msg.message);
-									}}
-									type="button"
-									class="btn-icon variant-filled ml-2 mt-2">💾</button
-								>
+								{#if chatContent[chatContent.length - 1].name === 'AIBOT'}
+									<button
+										on:click={() => {
+											handleModalSubmit(msg.message);
+										}}
+										type="button"
+										class="btn-icon variant-filled ml-2 mt-2">💾</button
+									>
+								{/if}
 							</div>
 							<div class="flex-shrink-0 ml-2">
 								<img
@@ -233,7 +238,7 @@
 	#cardcontainer {
 		max-width: 90%;
 		margin: 0 auto;
-		margin-bottom: 20em;
+		margin-bottom: 1em;
 	}
 
 	#chatcontainer {
