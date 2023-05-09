@@ -1,57 +1,73 @@
 <script>
 	const currentURL = window.location.href;
+	let randomNumber = Math.floor(Math.random() * 6) + 1
+
+
+	// Create a localStorage key for the flashcards using the last segment of the URL
 	const localStorageKeyFlashCard =
 		currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
 
+	// Initialize an empty array to hold the flashcards
 	let flashCardArray;
 
+	// Use a reactive statement to update the flashCardArray whenever the localStorage item changes
 	$: flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
+	// Function to check the contents of the flashCardArray
 	function checkArray() {
 		console.log(flashCardArray);
 	}
+	// Note: the reactive statement will run automatically whenever the localStorage item changes.
+	// You can call the checkArray function to log the current contents of the flashCardArray to the console.
+
+
+
+
+
 </script>
 
 <div id="cardcontainer" class="card p-2 flex justify-center">
 	<div id="cardsection" class="card p-4">
 		<div>
+
+
+
 			<div class="flip-card">
 				<div class="flip-card-inner">
 					<div class="flip-card-front">
-						<p class="title">FLIP CARD</p>
+						<p class="title">{flashCardArray[randomNumber].question}</p>
 						<p>Hover Me</p>
 					</div>
 					<div class="flip-card-back">
-						<p class="title">BACK</p>
+						<p class="title">{flashCardArray[randomNumber].answer}</p>
 						<p>Leave Me</p>
 					</div>
 				</div>
 
-				<div class="card p-4 mt-10">
-					<div class="flex justify-center">
-						<!-- Add this div with classes -->
-						<div id="buttons" class="btn-group variant-filled">
-							<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
-								>Again 1 Min</button
-							>
-							<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
-								>Hard 6 Min</button
-							>
-							<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
-								>Good 10 Min</button
-							>
-							<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
-								>Easy 4 Days</button
-							>
-						</div>
+
+
+
+			</div>
+			<div class="cards p-4 mt-20">
+				<div class="flex justify-center">
+					<!-- Add this div with classes -->
+					<div id="buttons" class="btn-group variant-filled">
+						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
+							>Again 1 Min</button
+						>
+						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
+							>Hard 6 Min</button
+						>
+						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
+							>Good 10 Min</button
+						>
+						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
+							>Easy 4 Days</button
+						>
 					</div>
 				</div>
-				<div class="  mt-5">
-					<button type="button" class="btn variant-filled-warning">
-						<span on:click={checkArray}>Delete Card</span>
-					</button>
-				</div>
 			</div>
+
 		</div>
 	</div>
 
@@ -92,6 +108,9 @@
 </div>
 
 <style>
+
+	
+
 	#addflascardsection {
 		min-width: 30%;
 	}

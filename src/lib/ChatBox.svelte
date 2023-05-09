@@ -15,6 +15,8 @@
 	// Function to handle clicking the send button
 	async function handleClick() {
 		// Send a POST request to the Langchain API with the last message sent by the user and the subjectId
+		console.log("awaiting response")
+
 		const response = await fetch('/api/Langchain', {
 			method: 'POST',
 			body: JSON.stringify({ message: lastMessageFromChat[0], source: $page.params.subjectId })
