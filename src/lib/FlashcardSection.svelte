@@ -1,26 +1,9 @@
 <script>
 	const currentURL = window.location.href;
-	let randomNumber = Math.floor(Math.random() * 6) + 1
-
-
-	// Create a localStorage key for the flashcards using the last segment of the URL
 	const localStorageKeyFlashCard =
-		currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
-
-	// Initialize an empty array to hold the flashcards
-	let flashCardArray;
-
-	// Use a reactive statement to update the flashCardArray whenever the localStorage item changes
-	$: flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
-
-	// Function to check the contents of the flashCardArray
-	function checkArray() {
-		console.log(flashCardArray);
-	}
-	// Note: the reactive statement will run automatically whenever the localStorage item changes.
-	// You can call the checkArray function to log the current contents of the flashCardArray to the console.
-
-
+	currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
+	let flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [{question: "please add a flashcard ",anwser: "hello world"}]
+	let randomNumber = Math.floor(Math.random() * flashCardArray.length);
 
 
 
@@ -29,9 +12,6 @@
 <div id="cardcontainer" class="card p-2 flex justify-center">
 	<div id="cardsection" class="card p-4">
 		<div>
-
-
-
 			<div class="flip-card">
 				<div class="flip-card-inner">
 					<div class="flip-card-front">
@@ -43,10 +23,6 @@
 						<p>Leave Me</p>
 					</div>
 				</div>
-
-
-
-
 			</div>
 			<div class="cards p-4 mt-20">
 				<div class="flex justify-center">
@@ -58,7 +34,7 @@
 						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
 							>Hard 6 Min</button
 						>
-						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
+						<button class="btn-group variant-ghost-primary [&>*+*]:border-blue-500"
 							>Good 10 Min</button
 						>
 						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
@@ -67,7 +43,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 
@@ -98,7 +73,8 @@
 						<a>
 							<span class="badge bg-primary-500">📘</span>
 							<span class="flex-auto">{a.question}</span>
-							<button>Delete card</button>
+							<button type="button" class="btn variant-filled-warning">Delete</button>
+			
 						</a>
 					{/each}
 				</li>
@@ -108,9 +84,6 @@
 </div>
 
 <style>
-
-	
-
 	#addflascardsection {
 		min-width: 30%;
 	}

@@ -9,8 +9,7 @@
 	let message = ''; // String to store user's message
 	let chatContent = [{ name: 'AIBOT', message: 'hello world' }]; // Array to store chat content with initial message from AI
 	let scrollToDiv: HTMLDivElement; // Element to scroll to when new message is added
-	const currentURL = window.location.href;
-	const localStorageKeyFlashCard = currentURL.substring(currentURL.lastIndexOf('/') + 1) + "flashcard"
+
 
 	// Function to handle clicking the send button
 	async function handleClick() {
@@ -117,14 +116,14 @@
   };
 
   // Check if the flash card already exists in the stored list of flash cards
-  const existingFlashCards = JSON.parse(localStorage.getItem(localStorageKeyFlashCard) || '[]');
+  const existingFlashCards = JSON.parse(localStorage.getItem(subjectId + "flashcard") || '[]');
   if (existingFlashCards.some(card => card.key === flashCard.key)) {
     return; // do not add the new flash card to the stored list
   }
 
   // Add the new flash card to the stored list of flash cards
   const updatedFlashCards = [...existingFlashCards, flashCard];
-  localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
+  localStorage.setItem(subjectId + "flashcard", JSON.stringify(updatedFlashCards));
 }
 	// Get chat content from local storage and update chatContent array
 	$: {
