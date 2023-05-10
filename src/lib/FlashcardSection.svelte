@@ -5,6 +5,37 @@
 	let flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [{question: "please add a flashcard ",anwser: "hello world"}]
 	let randomNumber = Math.floor(Math.random() * flashCardArray.length);
 
+	$: console.log(flashCardArray)
+
+
+	function addDelayToCard(event, flashcard) {
+
+		if (event === 1) {
+
+				let getDate = Date.now()
+			
+				flashcard.date = "test"
+
+				let updatedFlashCard = flashcard.date = getDate
+				
+
+				console.log(flashcard)
+
+			} else if (event === 6) {
+
+				console.log(flashcard)
+
+			} else if (event === 10) {
+
+				console.log(flashcard)
+
+			} else if (event === "max") {
+
+				console.log(flashcard)
+
+			}
+			
+		}
 
 
 </script>
@@ -28,23 +59,36 @@
 				<div class="flex justify-center">
 					<!-- Add this div with classes -->
 					<div id="buttons" class="btn-group variant-filled">
-						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
-							>Again 1 Min</button
+						<button
+							on:click={() => {
+								addDelayToCard(1, flashCardArray[randomNumber]);
+							}}
+							class="btn-group variant-ghost-primary [&>*+*]:border-red-500">Again 1 Min</button
 						>
-						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
-							>Hard 6 Min</button
+						<button
+							on:click={() => {
+								addDelayToCard(6, flashCardArray[randomNumber]);
+							}}
+							class="btn-group variant-ghost-primary [&>*+*]:border-red-500">Hard 6 Min</button
 						>
-						<button class="btn-group variant-ghost-primary [&>*+*]:border-blue-500"
-							>Good 10 Min</button
+						<button
+							on:click={() => {
+								addDelayToCard(10, flashCardArray[randomNumber]);
+							}}
+							class="btn-group variant-ghost-primary [&>*+*]:border-blue-500">Good 10 Min</button
 						>
-						<button class="btn-group variant-ghost-primary [&>*+*]:border-red-500"
-							>Easy 4 Days</button
+						<button
+							on:click={() => {
+								addDelayToCard('max', flashCardArray[randomNumber]);
+							}}
+							class="btn-group variant-ghost-primary [&>*+*]:border-red-500">Easy 4 Days</button
 						>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 
 	<div id="addflascardsection" class="card p-4">
 		<h2>add a flashcard</h2>
@@ -74,7 +118,6 @@
 							<span class="badge bg-primary-500">📘</span>
 							<span class="flex-auto">{a.question}</span>
 							<button type="button" class="btn variant-filled-warning">Delete</button>
-			
 						</a>
 					{/each}
 				</li>
