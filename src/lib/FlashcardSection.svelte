@@ -1,43 +1,40 @@
 <script>
 	const currentURL = window.location.href;
 	const localStorageKeyFlashCard =
-	currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
-	let flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [{question: "please add a flashcard ",anwser: "hello world"}]
+		currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
+	let flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [
+		{ question: 'please add a flashcard ', anwser: 'hello world' }
+	];
+
 	let randomNumber = Math.floor(Math.random() * flashCardArray.length);
 
-	$: console.log(flashCardArray)
-
-
 	function addDelayToCard(event, flashcard) {
-
 		if (event === 1) {
-
-				let getDate = Date.now()
-			
-				flashcard.date = "test"
-
-				let updatedFlashCard = flashcard.date = getDate
-				
-
-				console.log(flashcard)
-
-			} else if (event === 6) {
-
-				console.log(flashcard)
-
-			} else if (event === 10) {
-
-				console.log(flashcard)
-
-			} else if (event === "max") {
-
-				console.log(flashcard)
-
-			}
-			
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 1);
+		} else if (event === 6) {
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 6);
+		} else if (event === 10) {
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 10);
+		} else if (event === 'max') {
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 5760);
 		}
 
+		let localStorageFlashCard = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
+		if (localStorageFlashCard) {
+			const updatedFlashCards = localStorageFlashCard.map((e) => {
+				if (e.key === flashcard.key) {
+					return flashcard;
+				}
+				return 
+			});
+			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
+		}
+	}
 </script>
 
 <div id="cardcontainer" class="card p-2 flex justify-center">
@@ -88,7 +85,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	<div id="addflascardsection" class="card p-4">
 		<h2>add a flashcard</h2>
