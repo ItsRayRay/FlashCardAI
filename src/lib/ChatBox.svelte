@@ -3,6 +3,7 @@
 	import { FileDropzone, localStorageStore } from '@skeletonlabs/skeleton';
 	import { Modal, modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import { now } from 'svelte/internal';
 
 	// Initialize necessary variables
 	let lastMessageFromChat = []; // Array to store the last message sent by the user
@@ -108,7 +109,8 @@
 			question: matchingEvent.message,
 			answer: chatContent[chatContent.indexOf(matchingEvent) + 1]?.message,
 			key: chatContent.indexOf(matchingEvent),
-			difficulty: 'very hard'
+			difficulty: 'very hard',
+			date: new Date()
 		};
 
 		// Check if the flash card already exists in the stored list of flash cards

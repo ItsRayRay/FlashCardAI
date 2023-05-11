@@ -6,7 +6,7 @@
 		{ question: 'please add a flashcard ', anwser: 'hello world' }
 	];
 
-	let randomNumber = Math.floor(Math.random() * flashCardArray.length);
+	//let randomNumber = Math.floor(Math.random() * flashCardArray.length);
 
 	function addDelayToCard(event, flashcard) {
   if (event === 1) {
@@ -41,6 +41,14 @@
     localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
 
 	flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard))
+
+	
+
+   let flashCardArrayss = flashCardArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+	console.log(flashCardArrayss)
+
+
   }
 }
 </script>
@@ -51,12 +59,11 @@
 			<div class="flip-card">
 				<div class="flip-card-inner">
 					<div class="flip-card-front">
-						<p class="title">{flashCardArray[randomNumber].question}</p>
-						<p>Hover Me</p>
+						<p class="title">{flashCardArray[0].question}</p>
+
 					</div>
 					<div class="flip-card-back">
-						<p class="title">{flashCardArray[randomNumber].answer}</p>
-						<p>Leave Me</p>
+						<p class="title">{flashCardArray[0].answer}</p>
 					</div>
 				</div>
 			</div>
@@ -66,27 +73,27 @@
 					<div id="buttons" class="btn-group variant-filled">
 						<button
 							on:click={() => {
-								addDelayToCard(1, flashCardArray[randomNumber]);
+								addDelayToCard(1, flashCardArray[0]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-red-500 bg-red-500">Again 1 Min</button
+							class="border-red-500 bg-red-500">Again 1 Min</button
 						>
 						<button
 							on:click={() => {
-								addDelayToCard(6, flashCardArray[randomNumber]);
+								addDelayToCard(6, flashCardArray[0]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-red-500 bg-orange-500">Hard 6 Min</button
+							class="border-red-500 bg-orange-500">Hard 6 Min</button
 						>
 						<button
 							on:click={() => {
-								addDelayToCard(10, flashCardArray[randomNumber]);
+								addDelayToCard(10, flashCardArray[0]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-blue-500 bg-yellow-500">Good 10 Min</button
+							class="border-blue-500 bg-yellow-500">Good 10 Min</button
 						>
 						<button
 							on:click={() => {
-								addDelayToCard('max', flashCardArray[randomNumber]);
+								addDelayToCard('max', flashCardArray[0]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-red-500 bg-green-500">Easy 4 Days</button
+							class="border-red-500 bg-green-500">Easy 4 Days</button
 						>
 					</div>
 				</div>
@@ -163,13 +170,13 @@
 	}
 
 	#cardsection {
-		min-width: 35%;
+		min-width: 40%;
 	}
 
 	#saved_cards {
 		overflow: auto;
 		max-height: 70vh;
-		min-width: 35%;
+		min-width: 30%;
 	}
 
 	#cardcontainer {
