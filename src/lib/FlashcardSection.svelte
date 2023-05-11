@@ -9,32 +9,40 @@
 	let randomNumber = Math.floor(Math.random() * flashCardArray.length);
 
 	function addDelayToCard(event, flashcard) {
-		if (event === 1) {
-			flashcard.date = new Date();
-			flashcard.date.setMinutes(flashcard.date.getMinutes() + 1);
-		} else if (event === 6) {
-			flashcard.date = new Date();
-			flashcard.date.setMinutes(flashcard.date.getMinutes() + 6);
-		} else if (event === 10) {
-			flashcard.date = new Date();
-			flashcard.date.setMinutes(flashcard.date.getMinutes() + 10);
-		} else if (event === 'max') {
-			flashcard.date = new Date();
-			flashcard.date.setMinutes(flashcard.date.getMinutes() + 5760);
-		}
+  if (event === 1) {
+    flashcard.date = new Date();
+    flashcard.date.setMinutes(flashcard.date.getMinutes() + 1);
+	flashcard.difficulty = "very hard"
+  } else if (event === 6) {
+    flashcard.date = new Date();
+    flashcard.date.setMinutes(flashcard.date.getMinutes() + 6);
+	flashcard.difficulty = "hard"
+  } else if (event === 10) {
+    flashcard.date = new Date();
+    flashcard.date.setMinutes(flashcard.date.getMinutes() + 10);
+	flashcard.difficulty = "medium"
+  } else if (event === 'max') {
+    flashcard.date = new Date();
+    flashcard.date.setMinutes(flashcard.date.getMinutes() + 5760);
+	flashcard.difficulty = "easy"
+  }
 
-		let localStorageFlashCard = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+  let localStorageFlashCard = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
-		if (localStorageFlashCard) {
-			const updatedFlashCards = localStorageFlashCard.map((e) => {
-				if (e.key === flashcard.key) {
-					return flashcard;
-				}
-				return 
-			});
-			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
-		}
-	}
+  if (localStorageFlashCard) {
+    const updatedFlashCards = localStorageFlashCard.map((e) => {
+      if (e.key === flashcard.key) {
+        console.log(flashcard);
+        return { ...e, date: flashcard.date, difficulty: flashcard.difficulty };
+      }
+      return e;
+    });
+    
+    localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
+
+	flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard))
+  }
+}
 </script>
 
 <div id="cardcontainer" class="card p-2 flex justify-center">
@@ -60,25 +68,25 @@
 							on:click={() => {
 								addDelayToCard(1, flashCardArray[randomNumber]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-red-500">Again 1 Min</button
+							class="btn-group variant-ghost-primary [&>*+*]:border-red-500 bg-red-500">Again 1 Min</button
 						>
 						<button
 							on:click={() => {
 								addDelayToCard(6, flashCardArray[randomNumber]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-red-500">Hard 6 Min</button
+							class="btn-group variant-ghost-primary [&>*+*]:border-red-500 bg-orange-500">Hard 6 Min</button
 						>
 						<button
 							on:click={() => {
 								addDelayToCard(10, flashCardArray[randomNumber]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-blue-500">Good 10 Min</button
+							class="btn-group variant-ghost-primary [&>*+*]:border-blue-500 bg-yellow-500">Good 10 Min</button
 						>
 						<button
 							on:click={() => {
 								addDelayToCard('max', flashCardArray[randomNumber]);
 							}}
-							class="btn-group variant-ghost-primary [&>*+*]:border-red-500">Easy 4 Days</button
+							class="btn-group variant-ghost-primary [&>*+*]:border-red-500 bg-green-500">Easy 4 Days</button
 						>
 					</div>
 				</div>
@@ -110,11 +118,38 @@
 			<ul>
 				<li>
 					{#each flashCardArray as a}
+						{#if a.difficulty === "easy" }
 						<a>
 							<span class="badge bg-primary-500">📘</span>
 							<span class="flex-auto">{a.question}</span>
+							<div class="w-8 h-8 bg-green-500"></div>
 							<button type="button" class="btn variant-filled-warning">Delete</button>
 						</a>
+						{/if}
+						{#if a.difficulty === "medium" }
+						<a>
+							<span class="badge bg-primary-500">📘</span>
+							<span class="flex-auto">{a.question}</span>
+							<div class="w-8 h-8 bg-yellow-500"></div>
+							<button type="button" class="btn variant-filled-warning">Delete</button>
+						</a>
+						{/if}
+						{#if a.difficulty === "hard" }
+						<a>
+							<span class="badge bg-primary-500">📘</span>
+							<span class="flex-auto">{a.question}</span>
+							<div class="w-8 h-8 bg-orange-500"></div>
+							<button type="button" class="btn variant-filled-warning">Delete</button>
+						</a>
+						{/if}
+						{#if a.difficulty === "very hard" }
+						<a>
+							<span class="badge bg-primary-500">📘</span>
+							<span class="flex-auto">{a.question}</span>
+							<div class="w-8 h-8 bg-red-500"></div>
+							<button type="button" class="btn variant-filled-warning">Delete</button>
+						</a>
+						{/if}
 					{/each}
 				</li>
 			</ul>

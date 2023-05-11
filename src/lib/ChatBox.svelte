@@ -10,11 +10,10 @@
 	let chatContent = [{ name: 'AIBOT', message: 'hello world' }]; // Array to store chat content with initial message from AI
 	let scrollToDiv: HTMLDivElement; // Element to scroll to when new message is added
 
-
 	// Function to handle clicking the send button
 	async function handleClick() {
 		// Send a POST request to the Langchain API with the last message sent by the user and the subjectId
-		console.log("awaiting response")
+		console.log('awaiting response');
 
 		const response = await fetch('/api/Langchain', {
 			method: 'POST',
@@ -24,7 +23,6 @@
 		// If response is ok, add the response to the chat content
 		if (response.ok) {
 			if (chatContent[chatContent.length - 1].name === 'user') {
-			
 				const data = await response.json();
 				chatContent.push(data);
 				// Save the chat content to localStorage for this subjectId
@@ -39,7 +37,6 @@
 			}
 		}
 	}
-
 
 	// Function to scroll to the bottom of the chat box
 	function scrollToBotton() {
@@ -86,45 +83,44 @@
 			lastMessageFromChat.unshift(getLastChatMessage().message);
 			handleClick();
 			scrollToBotton();
-		
 		}
 	}
 
 	const alert: ModalSettings = {
-	type: 'alert',
-	// Data
-	title: 'Flashcard has been added',
-	body: 'Flashcard has been added',
-
-};
+		type: 'alert',
+		// Data
+		title: 'Flashcard has been added',
+		body: 'Flashcard has been added'
+	};
 	// Modal settings
 
 	// Handle modal submit
 	function handleModalSubmit(e) {
-  // Trigger the modal with the 'confirm' settings and the passed-in event 'e'
-  modalStore.trigger(alert);
+		// Trigger the modal with the 'confirm' settings and the passed-in event 'e'
+		modalStore.trigger(alert);
 
-  // Find the chatContent event that matches the passed-in event 'e'
-  const matchingEvent = chatContent.find(event => event.message === e);
-  if (!matchingEvent) return;
+		// Find the chatContent event that matches the passed-in event 'e'
+		const matchingEvent = chatContent.find((event) => event.message === e);
+		if (!matchingEvent) return;
 
-  // Create a new flash card object from the matching event and the following event
-  const flashCard = {
-    question: matchingEvent.message,
-    answer: chatContent[chatContent.indexOf(matchingEvent) + 1]?.message,
-    key: chatContent.indexOf(matchingEvent)
-  };
+		// Create a new flash card object from the matching event and the following event
+		const flashCard = {
+			question: matchingEvent.message,
+			answer: chatContent[chatContent.indexOf(matchingEvent) + 1]?.message,
+			key: chatContent.indexOf(matchingEvent),
+			difficulty: 'very hard'
+		};
 
-  // Check if the flash card already exists in the stored list of flash cards
-  const existingFlashCards = JSON.parse(localStorage.getItem(subjectId + "flashcard") || '[]');
-  if (existingFlashCards.some(card => card.key === flashCard.key)) {
-    return; // do not add the new flash card to the stored list
-  }
+		// Check if the flash card already exists in the stored list of flash cards
+		const existingFlashCards = JSON.parse(localStorage.getItem(subjectId + 'flashcard') || '[]');
+		if (existingFlashCards.some((card) => card.key === flashCard.key)) {
+			return; // do not add the new flash card to the stored list
+		}
 
-  // Add the new flash card to the stored list of flash cards
-  const updatedFlashCards = [...existingFlashCards, flashCard];
-  localStorage.setItem(subjectId + "flashcard", JSON.stringify(updatedFlashCards));
-}
+		// Add the new flash card to the stored list of flash cards
+		const updatedFlashCards = [...existingFlashCards, flashCard];
+		localStorage.setItem(subjectId + 'flashcard', JSON.stringify(updatedFlashCards));
+	}
 	// Get chat content from local storage and update chatContent array
 	$: {
 		const chatConentfromLocal = localStorage.getItem(subjectId);

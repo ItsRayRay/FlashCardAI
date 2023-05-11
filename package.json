@@ -41,6 +41,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@floating-ui/dom": "^1.2.7",
 		"langchain": "^0.0.67"
 	}
 }
