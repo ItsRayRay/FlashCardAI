@@ -3,6 +3,7 @@
 	import { FileDropzone, localStorageStore } from '@skeletonlabs/skeleton';
 	import { Modal, modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
 
 
 	// Initialize necessary variables
@@ -10,6 +11,7 @@
 	let message = ''; // String to store user's message
 	let chatContent = [{ name: 'AIBOT', message: 'hello world' }]; // Array to store chat content with initial message from AI
 	let scrollToDiv: HTMLDivElement; // Element to scroll to when new message is added
+	let chatIsLoading = false
 
 	// Function to handle clicking the send button
 	async function handleClick() {
@@ -171,8 +173,11 @@
 							</div>
 							<div class="bg-gray-200 dark:bg-gray-700 rounded-lg py-2 px-4 shadow-md">
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">StudyGenie</p>
-					
+								{#if chatIsLoading}
+								<ProgressRadial />
+							  {:else}
 								<p class="text-sm text-gray-700 dark:text-gray-300">{msg.message}</p>
+							  {/if}
 							</div>
 						</div>
 					{:else if msg.name === 'user'}
