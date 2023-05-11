@@ -41,18 +41,15 @@
 			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
 			flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 			flashCardArray = flashCardArray.sort((a, b) => new Date(a.date) - new Date(b.date));
-
 		}
 	}
 
 	function toggleCard(e) {
 		console.log(e);
-		console.log(flashCardArray);
-		flashCardArray.unshift(e);
-		console.log(flashCardArray)
-
-
-		flashCardArray = flashCardArray
+		//console.log(flashCardArray);
+		//flashCardArray.unshift(e);
+		//console.log(flashCardArray)
+		//flashCardArray = flashCardArray
 	}
 
 	function deleteCard(e) {
@@ -76,34 +73,39 @@
 			<div class="cards p-4 mt-20">
 				<div class="flex justify-center">
 					<!-- Add this div with classes -->
-					<div id="buttons" class="btn-group variant-filled">
+
+					<div>
 						<button
 							on:click={() => {
 								addDelayToCard(1, flashCardArray[0]);
 							}}
-							class="border-red-500 bg-red-500">Again 1 Min</button
+							type="button" class="p-3 bg-red-500 hover:bg-red-600">Again 1 Min</button
 						>
 						<button
 							on:click={() => {
 								addDelayToCard(6, flashCardArray[0]);
 							}}
-							class="border-red-500 bg-orange-500">Hard 6 Min</button
+							type="button" class="p-3 bg-orange-500 hover:bg-orange-600">Hard 6 Min</button
 						>
+						
+			
+
 						<button
 							on:click={() => {
 								addDelayToCard(10, flashCardArray[0]);
 							}}
-							class="border-blue-500 bg-yellow-500">Good 10 Min</button
+							type="button" class="p-3 bg-yellow-500 hover:bg-yellow-600">Good 10 Min</button
 						>
 						<button
 							on:click={() => {
 								addDelayToCard('max', flashCardArray[0]);
 							}}
-							class="border-red-500 bg-green-500">Easy 4 Days</button
+							type="button" class="p-3 bg-green-500 hover:bg-green-600">Easy 4 Days</button
 						>
+					
 					</div>
-				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 
@@ -140,7 +142,7 @@
 									}}
 									class="flex-auto">{a.question}</span
 								>
-								<div class="w-8 h-8 bg-green-500" />
+								<div class="w-6 h-6 bg-green-500" />
 								<button
 									on:click={() => {
 										deleteCard(a);
@@ -159,7 +161,7 @@
 									}}
 									class="flex-auto">{a.question}</span
 								>
-								<div class="w-8 h-8 bg-yellow-500" />
+								<div class="w-6 h-6 bg-yellow-500" />
 								<button
 									on:click={() => {
 										deleteCard(a);
@@ -178,7 +180,7 @@
 									}}
 									class="flex-auto">{a.question}</span
 								>
-								<div class="w-8 h-8 bg-orange-500" />
+								<div class="w-6 h-6 bg-orange-500" />
 								<button
 									on:click={() => {
 										deleteCard(a);
@@ -197,7 +199,7 @@
 									}}
 									class="flex-auto">{a.question}</span
 								>
-								<div class="w-8 h-8 bg-red-500" />
+								<div class="w-6 h-6 bg-red-500" />
 								<button
 									on:click={() => {
 										deleteCard(a);
@@ -216,17 +218,17 @@
 
 <style>
 	#addflascardsection {
-		min-width: 30%;
+		min-width: 20%;
 	}
 
 	#cardsection {
-		min-width: 40%;
+		min-width: 45%;
 	}
 
 	#saved_cards {
 		overflow: auto;
 		max-height: 70vh;
-		min-width: 30%;
+		min-width: 35%;
 	}
 
 	#cardcontainer {
