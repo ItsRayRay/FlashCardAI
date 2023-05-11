@@ -3,13 +3,15 @@
 	import { FileDropzone, localStorageStore } from '@skeletonlabs/skeleton';
 	import { Modal, modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
-	import { now } from 'svelte/internal';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
+
 
 	// Initialize necessary variables
 	let lastMessageFromChat = []; // Array to store the last message sent by the user
 	let message = ''; // String to store user's message
 	let chatContent = [{ name: 'AIBOT', message: 'hello world' }]; // Array to store chat content with initial message from AI
 	let scrollToDiv: HTMLDivElement; // Element to scroll to when new message is added
+	let chatIsLoading = false
 
 	// Function to handle clicking the send button
 	async function handleClick() {
@@ -24,6 +26,7 @@
 		// If response is ok, add the response to the chat content
 		if (response.ok) {
 			if (chatContent[chatContent.length - 1].name === 'user') {
+				chatIsLoading = false
 				const data = await response.json();
 				chatContent.push(data);
 				// Save the chat content to localStorage for this subjectId
@@ -38,6 +41,8 @@
 			}
 		}
 	}
+
+
 
 	// Function to scroll to the bottom of the chat box
 	function scrollToBotton() {
@@ -147,8 +152,10 @@
 		lastMessageFromChat.unshift(getLastChatMessage().message);
 		handleClick();
 		scrollToBotton();
+		chatIsLoading = true
 	}
 </script>
+
 
 <div id="cardcontainer" class="card p-4">
 	<div id="chatcontainer" class="card p-4" style="overflow-y: scroll;">
@@ -166,7 +173,11 @@
 							</div>
 							<div class="bg-gray-200 dark:bg-gray-700 rounded-lg py-2 px-4 shadow-md">
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">StudyGenie</p>
+								{#if chatIsLoading}
+								<ProgressRadial />
+							  {:else}
 								<p class="text-sm text-gray-700 dark:text-gray-300">{msg.message}</p>
+							  {/if}
 							</div>
 						</div>
 					{:else if msg.name === 'user'}

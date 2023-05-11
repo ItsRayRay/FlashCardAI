@@ -9,48 +9,55 @@
 	//let randomNumber = Math.floor(Math.random() * flashCardArray.length);
 
 	function addDelayToCard(event, flashcard) {
-  if (event === 1) {
-    flashcard.date = new Date();
-    flashcard.date.setMinutes(flashcard.date.getMinutes() + 1);
-	flashcard.difficulty = "very hard"
-  } else if (event === 6) {
-    flashcard.date = new Date();
-    flashcard.date.setMinutes(flashcard.date.getMinutes() + 6);
-	flashcard.difficulty = "hard"
-  } else if (event === 10) {
-    flashcard.date = new Date();
-    flashcard.date.setMinutes(flashcard.date.getMinutes() + 10);
-	flashcard.difficulty = "medium"
-  } else if (event === 'max') {
-    flashcard.date = new Date();
-    flashcard.date.setMinutes(flashcard.date.getMinutes() + 5760);
-	flashcard.difficulty = "easy"
-  }
+		if (event === 1) {
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 1);
+			flashcard.difficulty = 'very hard';
+		} else if (event === 6) {
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 6);
+			flashcard.difficulty = 'hard';
+		} else if (event === 10) {
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 10);
+			flashcard.difficulty = 'medium';
+		} else if (event === 'max') {
+			flashcard.date = new Date();
+			flashcard.date.setMinutes(flashcard.date.getMinutes() + 5760);
+			flashcard.difficulty = 'easy';
+		}
 
-  let localStorageFlashCard = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+		let localStorageFlashCard = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
-  if (localStorageFlashCard) {
-    const updatedFlashCards = localStorageFlashCard.map((e) => {
-      if (e.key === flashcard.key) {
-        console.log(flashcard);
-        return { ...e, date: flashcard.date, difficulty: flashcard.difficulty };
-      }
-      return e;
-    });
-    
-    localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
+		if (localStorageFlashCard) {
+			const updatedFlashCards = localStorageFlashCard.map((e) => {
+				if (e.key === flashcard.key) {
+					console.log(flashcard);
+					return { ...e, date: flashcard.date, difficulty: flashcard.difficulty };
+				}
+				return e;
+			});
 
-	flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard))
+			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedFlashCards));
+			flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+			flashCardArray = flashCardArray.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-	
+		}
+	}
 
-   let flashCardArrayss = flashCardArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+	function toggleCard(e) {
+		console.log(e);
+		console.log(flashCardArray);
+		flashCardArray.unshift(e);
+		console.log(flashCardArray)
 
-	console.log(flashCardArrayss)
 
+		flashCardArray = flashCardArray
+	}
 
-  }
-}
+	function deleteCard(e) {
+		console.log(e);
+	}
 </script>
 
 <div id="cardcontainer" class="card p-2 flex justify-center">
@@ -60,7 +67,6 @@
 				<div class="flip-card-inner">
 					<div class="flip-card-front">
 						<p class="title">{flashCardArray[0].question}</p>
-
 					</div>
 					<div class="flip-card-back">
 						<p class="title">{flashCardArray[0].answer}</p>
@@ -125,37 +131,81 @@
 			<ul>
 				<li>
 					{#each flashCardArray as a}
-						{#if a.difficulty === "easy" }
-						<a>
-							<span class="badge bg-primary-500">📘</span>
-							<span class="flex-auto">{a.question}</span>
-							<div class="w-8 h-8 bg-green-500"></div>
-							<button type="button" class="btn variant-filled-warning">Delete</button>
-						</a>
+						{#if a.difficulty === 'easy'}
+							<a>
+								<span class="badge bg-primary-500">📘</span>
+								<span
+									on:click={() => {
+										toggleCard(a);
+									}}
+									class="flex-auto">{a.question}</span
+								>
+								<div class="w-8 h-8 bg-green-500" />
+								<button
+									on:click={() => {
+										deleteCard(a);
+									}}
+									type="button"
+									class="btn variant-filled-warning">Delete</button
+								>
+							</a>
 						{/if}
-						{#if a.difficulty === "medium" }
-						<a>
-							<span class="badge bg-primary-500">📘</span>
-							<span class="flex-auto">{a.question}</span>
-							<div class="w-8 h-8 bg-yellow-500"></div>
-							<button type="button" class="btn variant-filled-warning">Delete</button>
-						</a>
+						{#if a.difficulty === 'medium'}
+							<a>
+								<span class="badge bg-primary-500">📘</span>
+								<span
+									on:click={() => {
+										toggleCard(a);
+									}}
+									class="flex-auto">{a.question}</span
+								>
+								<div class="w-8 h-8 bg-yellow-500" />
+								<button
+									on:click={() => {
+										deleteCard(a);
+									}}
+									type="button"
+									class="btn variant-filled-warning">Delete</button
+								>
+							</a>
 						{/if}
-						{#if a.difficulty === "hard" }
-						<a>
-							<span class="badge bg-primary-500">📘</span>
-							<span class="flex-auto">{a.question}</span>
-							<div class="w-8 h-8 bg-orange-500"></div>
-							<button type="button" class="btn variant-filled-warning">Delete</button>
-						</a>
+						{#if a.difficulty === 'hard'}
+							<a>
+								<span class="badge bg-primary-500">📘</span>
+								<span
+									on:click={() => {
+										toggleCard(a);
+									}}
+									class="flex-auto">{a.question}</span
+								>
+								<div class="w-8 h-8 bg-orange-500" />
+								<button
+									on:click={() => {
+										deleteCard(a);
+									}}
+									type="button"
+									class="btn variant-filled-warning">Delete</button
+								>
+							</a>
 						{/if}
-						{#if a.difficulty === "very hard" }
-						<a>
-							<span class="badge bg-primary-500">📘</span>
-							<span class="flex-auto">{a.question}</span>
-							<div class="w-8 h-8 bg-red-500"></div>
-							<button type="button" class="btn variant-filled-warning">Delete</button>
-						</a>
+						{#if a.difficulty === 'very hard'}
+							<a>
+								<span class="badge bg-primary-500">📘</span>
+								<span
+									on:click={() => {
+										toggleCard(a);
+									}}
+									class="flex-auto">{a.question}</span
+								>
+								<div class="w-8 h-8 bg-red-500" />
+								<button
+									on:click={() => {
+										deleteCard(a);
+									}}
+									type="button"
+									class="btn variant-filled-warning">Delete</button
+								>
+							</a>
 						{/if}
 					{/each}
 				</li>
