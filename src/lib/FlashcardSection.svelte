@@ -1,4 +1,6 @@
 <script>
+	import { compute_rest_props } from 'svelte/internal';
+
 	const currentURL = window.location.href;
 	const localStorageKeyFlashCard =
 		currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
@@ -45,15 +47,33 @@
 	}
 
 	function toggleCard(e) {
-		console.log(e);
-		//console.log(flashCardArray);
-		//flashCardArray.unshift(e);
-		//console.log(flashCardArray)
-		//flashCardArray = flashCardArray
-	}
+  let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+  console.log(getLocalStorage);
+
+  // Remove the old value if it exists
+  getLocalStorage = getLocalStorage.filter((card) => card.key !== e.key);
+
+  // Add the new value at the beginning of the array
+  getLocalStorage.unshift(e);
+
+  localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(getLocalStorage));
+  flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+}
+
+
+
 
 	function deleteCard(e) {
-		console.log(e);
+		let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+
+		if (getLocalStorage) {
+			const updatedLocalStorage = getLocalStorage.filter((card) => {
+				return card.key !== e.key;
+			});
+
+			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedLocalStorage));
+			flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+		}
 	}
 </script>
 
@@ -79,33 +99,34 @@
 							on:click={() => {
 								addDelayToCard(1, flashCardArray[0]);
 							}}
-							type="button" class="p-3 bg-red-500 hover:bg-red-600">Again 1 Min</button
+							type="button"
+							class="p-3 bg-red-500 hover:bg-red-600">Again 1 Min</button
 						>
 						<button
 							on:click={() => {
 								addDelayToCard(6, flashCardArray[0]);
 							}}
-							type="button" class="p-3 bg-orange-500 hover:bg-orange-600">Hard 6 Min</button
+							type="button"
+							class="p-3 bg-orange-500 hover:bg-orange-600">Hard 6 Min</button
 						>
-						
-			
 
 						<button
 							on:click={() => {
 								addDelayToCard(10, flashCardArray[0]);
 							}}
-							type="button" class="p-3 bg-yellow-500 hover:bg-yellow-600">Good 10 Min</button
+							type="button"
+							class="p-3 bg-yellow-500 hover:bg-yellow-600">Good 10 Min</button
 						>
 						<button
 							on:click={() => {
 								addDelayToCard('max', flashCardArray[0]);
 							}}
-							type="button" class="p-3 bg-green-500 hover:bg-green-600">Easy 4 Days</button
+							type="button"
+							class="p-3 bg-green-500 hover:bg-green-600">Easy 4 Days</button
 						>
-					
 					</div>
+				</div>
 			</div>
-		</div>
 		</div>
 	</div>
 
