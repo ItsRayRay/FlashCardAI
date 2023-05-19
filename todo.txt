@@ -1,0 +1,13 @@
+
+
+fix last item in flashcard that it doesn't crashes
+
+fix chatsection with chatIsLoading
+
+
+fix refresh issue
+
+fix langchain
+
+make a dropdown in the chatfunciton with pre made prompts
+

@@ -1,14 +1,37 @@
 <script>
 	import { compute_rest_props } from 'svelte/internal';
 
-	const currentURL = window.location.href;
-	const localStorageKeyFlashCard =
-		currentURL.substring(currentURL.lastIndexOf('/') + 1) + 'flashcard';
+	const localKey = document.getElementById('theSubject');
+
+	const localStorageKeyFlashCard = localKey?.textContent + 'flashcard';
 	let flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [
-		{ question: 'please add a flashcard ', anwser: 'hello world' }
+		{ question: 'please add a flashcard ', answer: '' }
 	];
 
 	//let randomNumber = Math.floor(Math.random() * flashCardArray.length);
+
+	function runBothDateFunctionandDelay(event, flashcard) {
+		checkFlashCardDate();
+		addDelayToCard(event, flashcard);
+	}
+
+	function checkFlashCardDate() {
+
+		const currentDate = new Date();
+
+		flashCardArray.forEach((item) => {
+			const storedDate = new Date(item.date);
+
+			// Step 3: If the date of an item is earlier than the current date, update its date
+			if (storedDate < currentDate) {
+				item.date = currentDate.toISOString();
+				item.difficulty = "very hard"
+			}
+		});
+
+
+		localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(flashCardArray));
+	}
 
 	function addDelayToCard(event, flashcard) {
 		if (event === 1) {
@@ -34,7 +57,6 @@
 		if (localStorageFlashCard) {
 			const updatedFlashCards = localStorageFlashCard.map((e) => {
 				if (e.key === flashcard.key) {
-					console.log(flashcard);
 					return { ...e, date: flashcard.date, difficulty: flashcard.difficulty };
 				}
 				return e;
@@ -47,21 +69,21 @@
 	}
 
 	function toggleCard(e) {
-  let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
-  console.log(getLocalStorage);
+		let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
-  // Remove the old value if it exists
-  getLocalStorage = getLocalStorage.filter((card) => card.key !== e.key);
+		// Remove the old value if it exists
+		getLocalStorage = getLocalStorage.filter((card) => card.key !== e.key);
 
-  // Add the new value at the beginning of the array
-  getLocalStorage.unshift(e);
+		// Add the new value at the beginning of the array
+		getLocalStorage.unshift(e);
 
-  localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(getLocalStorage));
-  flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
-}
+		//if flashcardarray is empty then put flascardarray to question anwser
 
-
-
+		localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(getLocalStorage));
+		flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [
+			{ question: 'please add a flashcard ', answer: '' }
+		];
+	}
 
 	function deleteCard(e) {
 		let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
@@ -72,7 +94,10 @@
 			});
 
 			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedLocalStorage));
-			flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+
+			flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [
+				{ question: 'please add a flashcard ', answer: '' }
+			];
 		}
 	}
 </script>
@@ -97,14 +122,14 @@
 					<div>
 						<button
 							on:click={() => {
-								addDelayToCard(1, flashCardArray[0]);
+								runBothDateFunctionandDelay(1, flashCardArray[0]);
 							}}
 							type="button"
 							class="p-3 bg-red-500 hover:bg-red-600">Again 1 Min</button
 						>
 						<button
 							on:click={() => {
-								addDelayToCard(6, flashCardArray[0]);
+								runBothDateFunctionandDelay(6, flashCardArray[0]);
 							}}
 							type="button"
 							class="p-3 bg-orange-500 hover:bg-orange-600">Hard 6 Min</button
@@ -112,14 +137,14 @@
 
 						<button
 							on:click={() => {
-								addDelayToCard(10, flashCardArray[0]);
+								runBothDateFunctionandDelay(10, flashCardArray[0]);
 							}}
 							type="button"
 							class="p-3 bg-yellow-500 hover:bg-yellow-600">Good 10 Min</button
 						>
 						<button
 							on:click={() => {
-								addDelayToCard('max', flashCardArray[0]);
+								runBothDateFunctionandDelay('max', flashCardArray[0]);
 							}}
 							type="button"
 							class="p-3 bg-green-500 hover:bg-green-600">Easy 4 Days</button
