@@ -15,6 +15,8 @@
 		addDelayToCard(event, flashcard);
 	}
 
+	
+
 	function checkFlashCardDate() {
 
 		const currentDate = new Date();
@@ -86,20 +88,29 @@
 	}
 
 	function deleteCard(e) {
-		let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+  let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
-		if (getLocalStorage) {
-			const updatedLocalStorage = getLocalStorage.filter((card) => {
-				return card.key !== e.key;
-			});
+  if (getLocalStorage) {
+    const updatedLocalStorage = getLocalStorage.filter((card) => {
+      return card.key !== e.key;
+    });
 
-			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedLocalStorage));
+    localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedLocalStorage));
 
-			flashCardArray = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [
-				{ question: 'please add a flashcard ', answer: '' }
-			];
-		}
-	}
+    if (updatedLocalStorage.length === 0) {
+      const defaultCard = { question: 'please add a flashcard ', answer: '' };
+      localStorage.setItem(localStorageKeyFlashCard, JSON.stringify([defaultCard]));
+      flashCardArray = [defaultCard];
+    } else {
+      flashCardArray = updatedLocalStorage;
+    }
+  } else {
+    const defaultCard = { question: 'please add a flashcard ', answer: '' };
+    localStorage.setItem(localStorageKeyFlashCard, JSON.stringify([defaultCard]));
+    flashCardArray = [defaultCard];
+  }
+}
+
 </script>
 
 <div id="cardcontainer" class="card p-2 flex justify-center">
