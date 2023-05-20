@@ -1,5 +1,5 @@
 <script>
-	import { compute_rest_props } from 'svelte/internal';
+	import NoWorkResult from "postcss/lib/no-work-result";
 
 	const localKey = document.getElementById('theSubject');
 
@@ -15,10 +15,7 @@
 		addDelayToCard(event, flashcard);
 	}
 
-	
-
 	function checkFlashCardDate() {
-
 		const currentDate = new Date();
 
 		flashCardArray.forEach((item) => {
@@ -27,10 +24,9 @@
 			// Step 3: If the date of an item is earlier than the current date, update its date
 			if (storedDate < currentDate) {
 				item.date = currentDate.toISOString();
-				item.difficulty = "very hard"
+				item.difficulty = 'very hard';
 			}
 		});
-
 
 		localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(flashCardArray));
 	}
@@ -88,29 +84,52 @@
 	}
 
 	function deleteCard(e) {
-  let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
+		let getLocalStorage = JSON.parse(localStorage.getItem(localStorageKeyFlashCard));
 
-  if (getLocalStorage) {
-    const updatedLocalStorage = getLocalStorage.filter((card) => {
-      return card.key !== e.key;
-    });
+		if (getLocalStorage) {
+			const updatedLocalStorage = getLocalStorage.filter((card) => {
+				return card.key !== e.key;
+			});
 
-    localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedLocalStorage));
+			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(updatedLocalStorage));
 
-    if (updatedLocalStorage.length === 0) {
-      const defaultCard = { question: 'please add a flashcard ', answer: '' };
-      localStorage.setItem(localStorageKeyFlashCard, JSON.stringify([defaultCard]));
-      flashCardArray = [defaultCard];
-    } else {
-      flashCardArray = updatedLocalStorage;
-    }
-  } else {
-    const defaultCard = { question: 'please add a flashcard ', answer: '' };
-    localStorage.setItem(localStorageKeyFlashCard, JSON.stringify([defaultCard]));
-    flashCardArray = [defaultCard];
-  }
-}
+			if (updatedLocalStorage.length === 0) {
+				const defaultCard = { question: 'please add a flashcard ', answer: '' };
+				localStorage.setItem(localStorageKeyFlashCard, JSON.stringify([defaultCard]));
+				flashCardArray = [defaultCard];
+			} else {
+				flashCardArray = updatedLocalStorage;
+			}
+		} else {
+			const defaultCard = { question: 'please add a flashcard ', answer: '' };
+			localStorage.setItem(localStorageKeyFlashCard, JSON.stringify([defaultCard]));
+			flashCardArray = [defaultCard];
+		}
+	}
 
+	function addCard() {
+		event.preventDefault();
+
+		const questionInput = document.querySelector('.input');
+		const answerTextarea = document.querySelector('.textarea');
+		const question = questionInput.value;
+		const answer = answerTextarea.value;
+		const currentDate = new Date();
+		const currentDateToString = currentDate.toISOString();
+
+		const localItems = JSON.parse(localStorage.getItem(localStorageKeyFlashCard)) || [];
+
+		const addedCard = {
+			question: question,
+			answer: answer,
+			key: new Date(),
+			difficulty: 'very hard',
+			date: currentDateToString
+		};
+		localItems.unshift(addedCard);
+		localStorage.setItem(localStorageKeyFlashCard, JSON.stringify(localItems));
+		flashCardArray = localItems;
+	}
 </script>
 
 <div id="cardcontainer" class="card p-2 flex justify-center">
@@ -169,19 +188,19 @@
 	<div id="addflascardsection" class="card p-4">
 		<h2>add a flashcard</h2>
 		<label class="label">
-			<span>Input</span>
-			<input class="input" type="text" placeholder="Question" />
+		  <span>Input</span>
+		  <input class="input" type="text" placeholder="Question" />
 		</label>
-
+	  
 		<label class="label">
-			<span>Textarea</span>
-			<textarea class="textarea" rows="4" placeholder="Answer." />
+		  <span>Textarea</span>
+		  <textarea class="textarea" rows="4" placeholder="Answer."></textarea>
 		</label>
-
-		<a href="/" class="btn variant-filled">
-			<span>Add Card</span>
-		</a>
-	</div>
+	  
+		<button class="btn variant-filled" type="button" on:click={addCard}>
+		  <span>Add Card</span>
+		</button>
+	  </div>
 
 	<div id="saved_cards" class="card p-4">
 		<nav class="list-nav">
